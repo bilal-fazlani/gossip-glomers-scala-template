@@ -40,6 +40,12 @@ https://zio-maelstrom.bilal-fazlani.com/
 3. GraalVM Community Edition with native-image tool should be installed
 4. `sh` / `bash` should be available
 
+## Getting started
+
+This is a template repository. Use the below option to create your own repo using this template.
+
+![image](https://github.com/bilal-fazlani/gossip-glomers-scala-template/assets/3396271/7b419e92-24d1-4984-9171-0093fe94fcb8)
+
 ## Setup
 
 Using running jar files does not work because they start too slow and the tests timeout. 
