@@ -51,18 +51,22 @@ This is a template repository. Use the below option to create your own repo usin
 Using running jar files does not work because they start too slow and the tests timeout. 
 So, we need to compile them to native binaries using graalvm
 
-There are two commands available on every solution:
+There are three custom (and useful) commands available on every solution subproject:
 
-1. `maelstromRunAgent`
+1. `bootstrap`
+
+    bootstrap command uses coursier to build a fat jar will all dependencies. It also create a maelstrom runner script `testjar.sh` file which can be used to run the jar file via maelstrom with expected load for the challenge.
+   
+3. `maelstromRunAgent`
 
     In order to create a native binary, we first run the java application (single node) with a very small load from maelstrom. Using command `maelstromRunAgent`.
     This runs with graalvm agent and generates reflection configuration in `resources/META-INF/native-image/`
 
     Reflection configurations don't change very often. So, we can reuse them for future compilations.
 
-2. `nativePackage`
+4. `nativePackage`
 
-    After reflection configs are generated, we can now compile the application to a native binary using `nativePackage` command. This task also creates a `test.sh` file which can be used to run the native binary with actual load from maelstrom.
+    After reflection configs are generated, we can now compile the application to a native binary using `nativePackage` command. This task also creates a `test.sh` file which can be used to run the native binary via maelstrom with expected load for the challenge.
 
 ```bash
 #replace with the challenge you want to compile
