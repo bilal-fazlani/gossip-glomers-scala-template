@@ -93,7 +93,7 @@ lazy val `kafka-style-log` = project
   .enablePlugins(NativeImagePlugin)
   .settings(commonSettings: _*)
 
-// Challenge #5b: Multi-Node Kafka-Style Log  
+// Challenge #5b: Multi-Node Kafka-Style Log
 lazy val `multi-node-kafka-style-log` = project
   .in(file("multi-node-kafka-style-log"))
   .settings(
@@ -103,7 +103,7 @@ lazy val `multi-node-kafka-style-log` = project
   .enablePlugins(NativeImagePlugin)
   .settings(commonSettings: _*)
 
-// Challenge #5c: Efficient Kafka-Style Log  
+// Challenge #5c: Efficient Kafka-Style Log
 lazy val `efficient-kafka-style-log` = project
   .in(file("efficient-kafka-style-log"))
   .settings(
@@ -113,7 +113,7 @@ lazy val `efficient-kafka-style-log` = project
   .enablePlugins(NativeImagePlugin)
   .settings(commonSettings: _*)
 
-// Challenge #6a: Single-Node, Totally-Available Transactions  
+// Challenge #6a: Single-Node, Totally-Available Transactions
 lazy val `single-node-totally-available-transactions` = project
   .in(file("single-node-totally-available-transactions"))
   .settings(
@@ -133,7 +133,7 @@ lazy val `totally-available-read-uncommitted-transactions` = project
   .enablePlugins(NativeImagePlugin)
   .settings(commonSettings: _*)
 
-// Challenge #6c: Totally-Available, Read Committed Transactions  
+// Challenge #6c: Totally-Available, Read Committed Transactions
 lazy val `totally-available-read-committed-transactions` = project
   .in(file("totally-available-read-committed-transactions"))
   .settings(
@@ -191,6 +191,15 @@ lazy val commonSettings = Seq(
     if (exitCode != 0) {
       throw new RuntimeException("bootstrap failed")
     }
+    val scriptContents = s"""#!/usr/bin/env bash
+                                |set -e
+                                |set -x
+                                |
+                                |maelstrom test --bin $$(dirname "$$0")/${name.value}.jar ${testParams.value}
+                                |""".stripMargin
+    val p = target.value / "testjar.sh"
+    io.IO.write(p, scriptContents)
+    io.IO.chmod("rwxr-----", p)
   },
   maelstromRunAgent := {
     bootstrap.value
@@ -199,12 +208,16 @@ lazy val commonSettings = Seq(
   },
   usefulTasks := Seq(
     UsefulTask(
+      "bootstrap",
+      "creates fat jar with all dependencies with a maelstrom runner script"
+    ),
+    UsefulTask(
       "maelstromRunAgent",
       "run maelstrom simulation to generate graalvm reflection configuration"
     ),
     UsefulTask(
       "nativePackage",
-      "create native image with maelstrom runner script"
+      "create native image with a maelstrom runner script"
     )
   ),
   nativePackage := {
