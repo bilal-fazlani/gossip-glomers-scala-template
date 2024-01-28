@@ -158,19 +158,17 @@ lazy val platformSuffix: String = {
 }
 
 lazy val commonSettings = Seq(
-  scalaVersion := "3.3.0",
+  scalaVersion := "3.3.1",
   organization := "com.gossip-glomers",
   Compile / mainClass := Some("gossipGlomers.Main"),
   resolvers ++= Resolver.sonatypeOssRepos("snapshots"),
   scalacOptions += "-Wunused:all",
   version := "0.1.0-SNAPSHOT",
   run / connectInput := true,
-  nativeImageGraalHome := file(
-    "/Library/Java/JavaVirtualMachines/graalvm-community-openjdk-20.0.1+9.1/Contents/Home"
-  ).toPath,
+  nativeImageGraalHome := (sbt.io.Path.userHome / ".sdkman/candidates/java/current/").toPath,
+  nativeImageOptions ++= Seq("--no-fallback", "-march=native"), // , "--verbose"),
   nativeImageAgentOutputDir := baseDirectory.value / "src" / "main" / "resources" / "META-INF" / "native-image",
   nativeImageAgentMerge := false,
-  nativeImageOptions ++= Seq("--no-fallback", "-march=native"), // , "--verbose"),
   nativeImageInstalled := true,
   libraryDependencies += "com.bilal-fazlani" %% "zio-maelstrom" % ZIO_MAELSTROM_VERSION,
   nativeImageOutput := target.value / s"${name.value}-$platformSuffix",
