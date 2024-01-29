@@ -1,7 +1,7 @@
 import sbtwelcome._
 import scala.sys.process._
 
-val ZIO_MAELSTROM_VERSION = "0.6.0"
+val ZIO_MAELSTROM_VERSION = "1.0.0"
 
 // Challenge #1: Echo
 lazy val echo = project
